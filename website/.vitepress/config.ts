@@ -352,6 +352,10 @@ export default withMermaid({
       alias: { 'vitepress-plugin-mermaid/Mermaid.vue': websiteRequire.resolve('vitepress-plugin-mermaid/Mermaid.vue') },
       dedupe: ['vue'],
     },
+    // `withMermaid` pre-bundles the mermaid dependencies its list predates: current mermaid also
+    // imports `fastdom`, a UMD package with no default export. Unlisted, dev serves it raw and the
+    // browser rejects mermaid's default import, blanking every page; the production build is unaffected.
+    optimizeDeps: { include: ['fastdom', 'fastdom/extensions/fastdom-promised.js'] },
     plugins: [
       {
         name: 'deepseek-harness-doc-projector',
